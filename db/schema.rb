@@ -10,7 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_29_173215) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_29_182210) do
+  create_table "jobs", force: :cascade do |t|
+    t.integer "assigned_user_id"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.date "scheduled_for"
+    t.string "status"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["assigned_user_id"], name: "index_jobs_on_assigned_user_id"
+  end
+
+  create_table "time_entries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.decimal "hours"
+    t.integer "job_id", null: false
+    t.text "notes"
+    t.integer "timesheet_id", null: false
+    t.datetime "updated_at", null: false
+    t.date "work_date"
+    t.index ["job_id"], name: "index_time_entries_on_job_id"
+    t.index ["timesheet_id"], name: "index_time_entries_on_timesheet_id"
+  end
+
+  create_table "timesheets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.date "week_start"
+    t.index ["user_id"], name: "index_timesheets_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "date_of_birth"
@@ -19,4 +51,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_29_173215) do
     t.string "name"
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "jobs", "users", column: "assigned_user_id"
+  add_foreign_key "time_entries", "jobs"
+  add_foreign_key "time_entries", "timesheets"
+  add_foreign_key "timesheets", "users"
 end

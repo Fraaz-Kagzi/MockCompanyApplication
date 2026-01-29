@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  timesheet: one
+  job: one
+  work_date: 2026-01-29
+  hours: 9.99
+  notes: MyText
+
+two:
+  timesheet: two
+  job: two
+  work_date: 2026-01-29
+  hours: 9.99
+  notes: MyText
