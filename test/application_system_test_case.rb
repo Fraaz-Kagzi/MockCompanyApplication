@@ -1,8 +1,5 @@
-require "application_system_test_case"
+require "test_helper"
 
-class SmokeTest < ApplicationSystemTestCase
-  test "can visit jobs page" do
-    visit jobs_path
-    assert_text "Jobs"
-  end
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
 end
