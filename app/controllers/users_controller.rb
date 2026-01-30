@@ -50,12 +50,11 @@ class UsersController < ApplicationController
   # DELETE /users/1 or /users/1.json
   def destroy
     @user.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to users_path, notice: "User was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to users_url, notice: "User was successfully deleted."
+  rescue ActiveRecord::InvalidForeignKey
+    redirect_to @user, alert: "Can't delete this user because they have related records (e.g. jobs, timesheets, incidents)."
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

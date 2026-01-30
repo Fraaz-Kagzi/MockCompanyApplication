@@ -50,12 +50,11 @@ class JobsController < ApplicationController
   # DELETE /jobs/1 or /jobs/1.json
   def destroy
     @job.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to jobs_path, notice: "Job was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to jobs_url, notice: "Job was successfully deleted."
+  rescue ActiveRecord::InvalidForeignKey
+    redirect_to @job, alert: "Can't delete this job because it has related records (e.g. time entries/incidents)."
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

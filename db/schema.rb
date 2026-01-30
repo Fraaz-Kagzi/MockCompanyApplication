@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_30_152226) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_30_164017) do
+  create_table "incidents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.integer "job_id", null: false
+    t.string "location"
+    t.date "occurred_on"
+    t.integer "reported_by_id", null: false
+    t.integer "severity"
+    t.integer "status"
+    t.datetime "updated_at", null: false
+    t.index ["job_id"], name: "index_incidents_on_job_id"
+    t.index ["reported_by_id"], name: "index_incidents_on_reported_by_id"
+  end
+
   create_table "jobs", force: :cascade do |t|
     t.integer "assigned_user_id"
     t.datetime "created_at", null: false
@@ -52,8 +66,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_30_152226) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "incidents", "jobs"
+  add_foreign_key "incidents", "users", column: "reported_by_id"
   add_foreign_key "jobs", "users", column: "assigned_user_id"
-  add_foreign_key "time_entries", "jobs"
+  add_foreign_key "time_entries", "jobs", on_delete: :nullify
   add_foreign_key "time_entries", "timesheets"
   add_foreign_key "timesheets", "users"
 end

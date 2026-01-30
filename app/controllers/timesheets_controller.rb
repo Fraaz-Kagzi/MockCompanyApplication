@@ -65,6 +65,6 @@ class TimesheetsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def timesheet_params
-      params.expect(timesheet: [ :user_id, :week_start, :status ])
+      params.require(:timesheet).permit(:user_id, :week_start, :status)
     end
 end
