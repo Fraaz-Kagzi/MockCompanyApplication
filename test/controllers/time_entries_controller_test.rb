@@ -3,46 +3,46 @@ require "test_helper"
 class TimeEntriesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @time_entry = time_entries(:one)
-  end
-
-  test "should get index" do
-    get time_entries_url
-    assert_response :success
+    @timesheet = @time_entry.timesheet
   end
 
   test "should get new" do
-    get new_time_entry_url
+    get new_timesheet_time_entry_url(@timesheet)
     assert_response :success
   end
 
   test "should create time_entry" do
     assert_difference("TimeEntry.count") do
-      post time_entries_url, params: { time_entry: { hours: @time_entry.hours, job_id: @time_entry.job_id, notes: @time_entry.notes, timesheet_id: @time_entry.timesheet_id, work_date: @time_entry.work_date } }
+      post timesheet_time_entries_url(@timesheet), params: {
+        time_entry: {
+          job_id: jobs(:one).id,
+          work_date: @time_entry.work_date,
+          hours: @time_entry.hours,
+          notes: "Test note"
+        }
+      }
     end
 
-    assert_redirected_to time_entry_url(TimeEntry.last)
-  end
-
-  test "should show time_entry" do
-    get time_entry_url(@time_entry)
-    assert_response :success
+    assert_redirected_to timesheet_url(@timesheet)
   end
 
   test "should get edit" do
-    get edit_time_entry_url(@time_entry)
+    get edit_timesheet_time_entry_url(@timesheet, @time_entry)
     assert_response :success
   end
 
   test "should update time_entry" do
-    patch time_entry_url(@time_entry), params: { time_entry: { hours: @time_entry.hours, job_id: @time_entry.job_id, notes: @time_entry.notes, timesheet_id: @time_entry.timesheet_id, work_date: @time_entry.work_date } }
-    assert_redirected_to time_entry_url(@time_entry)
+    patch timesheet_time_entry_url(@timesheet, @time_entry), params: {
+      time_entry: { notes: "Updated note" }
+    }
+    assert_redirected_to timesheet_url(@timesheet)
   end
 
   test "should destroy time_entry" do
     assert_difference("TimeEntry.count", -1) do
-      delete time_entry_url(@time_entry)
+      delete timesheet_time_entry_url(@timesheet, @time_entry)
     end
 
-    assert_redirected_to time_entries_url
+    assert_redirected_to timesheet_url(@timesheet)
   end
 end

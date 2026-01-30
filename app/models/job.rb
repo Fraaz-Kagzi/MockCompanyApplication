@@ -1,4 +1,4 @@
 class Job < ApplicationRecord
   belongs_to :assigned_user, class_name: "User", optional: true
-  has_many :time_entries
+  has_many :time_entries, dependent: :nullify
 end
